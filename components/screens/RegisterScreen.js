@@ -1,10 +1,9 @@
 import React, { useLayoutEffect, useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { KeyboardAvoidingView } from "react-native";
 import styles from "../Style/styles";
 import { Button, Input, Image } from "react-native-elements";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { auth } from "../firebase/firebase";
 
 const RegisterScreen = ({ navigation }) => {
@@ -23,7 +22,7 @@ const RegisterScreen = ({ navigation }) => {
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((authUser) => {
-        authUser.user.update({
+        authUser.user.updateProfile({
           displayName: name,
           photoURL:
             imageUrl ||
@@ -35,7 +34,7 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView behavior="padding" enabled style={styles.container}>
-      <StatusBar style="dark" />
+      <StatusBar style="inverted" />
       <Text style={styles.h1Text}>Create a account</Text>
       <View style={styles.inputContainer}>
         <Input

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Button, Input, Image } from "react-native-elements";
 import { KeyboardAvoidingView } from "react-native";
 import styles from "../Style/styles";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { auth } from "../firebase/firebase";
 
 const LoginScreen = ({ navigation }) => {
@@ -19,11 +18,16 @@ const LoginScreen = ({ navigation }) => {
     });
     return isUserLoggedIn;
   }, []);
-  const signIn = () => {};
+
+  const signIn = () => {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .catch((error) => alert(error));
+  };
 
   return (
     <KeyboardAvoidingView behavior="padding" enabled style={styles.container}>
-      <StatusBar style="dark" />
+      <StatusBar style="inverted" />
       <Image
         source={{
           uri:
@@ -48,6 +52,7 @@ const LoginScreen = ({ navigation }) => {
           type="password"
           value={password}
           onChangeText={(text) => setPassword(text)}
+          onSubmitEditing={signIn}
         />
       </View>
 
