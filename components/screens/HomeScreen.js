@@ -1,17 +1,32 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { SafeAreaView } from "react-native";
 import { ScrollView, View, TouchableOpacity } from "react-native";
 import { Avatar } from "react-native-elements";
 import CostomListItem from "../customs/CostomListItem";
-import { auth } from "../firebase/firebase";
+import { auth, db } from "../firebase/firebase";
 import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
+import styles from "../Style/styles";
 
 const HomeScreen = ({ navigation }) => {
+  const [chat, setChat] = useState([]);
+
   const signOutUser = () => {
     auth.signOut.then(() => {
       navigation.replace("Login");
     });
   };
+
+  useEffect(() => {
+    const unsubscribe = db.collection("chats").onSnapshot((snapshot) =>
+      setChat(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      )
+    );
+    return unsubscribe;
+  }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -36,20 +51,37 @@ const HomeScreen = ({ navigation }) => {
           }}
         >
           <TouchableOpacity activeOpacity={0.5}>
-            <Avatar rounded name="camerao" size={24} color="black" />
+            <AntDesign name="camerao" size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.5}>
-            <Avatar rounded name="pencil" size={24} color="black" />
+          <TouchableOpacity
+            onPress={() => navigation.navigate("AddChat")}
+            activeOpacity={0.5}
+          >
+            <SimpleLineIcons name="pencil" size={20} color="black" />
           </TouchableOpacity>
         </View>
       ),
     });
   }, [navigation]);
 
+  const enterChat = (id, chatName) => {
+    navigation.navigate("Chat", {
+      id: id,
+      chatName: chatName,
+    });
+  };
+
   return (
     <SafeAreaView>
-      <ScrollView>
-        <CostomListItem />
+      <ScrollView style={styles.containerFull}>
+        {chat.map(({ id, data: { chatName } }) => (
+          <CostomListItem
+            key={id}
+            id={id}
+            chatName={chatName}
+            enterChat={enterChat}
+          />
+        ))}
       </ScrollView>
     </SafeAreaView>
   );

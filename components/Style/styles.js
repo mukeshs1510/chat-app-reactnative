@@ -8,6 +8,14 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "#f7f7f7",
   },
+  containerAddChat: {
+    height: "100%",
+    padding: 30,
+    backgroundColor: "white",
+  },
+  containerFull: {
+    height: "100%",
+  },
   inputContainer: {
     width: 300,
   },

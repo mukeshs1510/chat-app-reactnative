@@ -4,7 +4,7 @@ import { Avatar, ListItem } from "react-native-elements";
 
 const CostomListItem = ({ id, chatName, enterChat }) => {
   return (
-    <ListItem>
+    <ListItem onPress={() => enterChat(id, chatName)} key={id} bottomDivider>
       <Avatar
         rounded
         source={{
@@ -14,7 +14,7 @@ const CostomListItem = ({ id, chatName, enterChat }) => {
       />
       <ListItem.Content>
         <ListItem.Title style={{ fontWeight: "800" }}>
-          Mukesh Suthar
+          {chatName}
         </ListItem.Title>
         <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail">
           Test Subtitle
