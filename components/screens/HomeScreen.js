@@ -11,7 +11,7 @@ const HomeScreen = ({ navigation }) => {
   const [chat, setChat] = useState([]);
 
   const signOutUser = () => {
-    auth.signOut.then(() => {
+    auth.signOut().then(() => {
       navigation.replace("Login");
     });
   };
@@ -58,6 +58,17 @@ const HomeScreen = ({ navigation }) => {
             activeOpacity={0.5}
           >
             <SimpleLineIcons name="pencil" size={20} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("AddChat")}
+            activeOpacity={0.5}
+          >
+            <SimpleLineIcons
+              name="logout"
+              size={20}
+              color="black"
+              onPress={signOutUser}
+            />
           </TouchableOpacity>
         </View>
       ),
